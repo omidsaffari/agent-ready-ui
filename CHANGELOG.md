@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.2 - 2026-06-26
+
+- Fix the brittle selector example so it matches the shown checkout DOM.
+- Add a Radix/shadcn-style dialog example for a framework-shaped proof.
+- Simplify CI now that `agent-ready-ui` is a filled repo, not the starter
+  scaffold.
+
 ## 0.1.1 - 2026-06-26
 
 - Add checkout before/after proof, action-map template, locator references, and

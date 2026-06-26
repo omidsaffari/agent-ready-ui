@@ -34,7 +34,7 @@ export function PaymentModal({ saving, onClose, onSave }) {
 The resulting locator is brittle because it encodes layout:
 
 ```ts
-await page.locator('.modal > div:nth-child(2) button').click();
+await page.locator('.modal > button:nth-of-type(2)').click();
 ```
 
 ## After

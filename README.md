@@ -48,7 +48,7 @@ Then invoke with `$agent-ready-ui`, or let Codex pick it implicitly.
 
 ```ts
 // before: layout-coupled and easy to break
-await page.locator('.modal > div:nth-child(2) button').click();
+await page.locator('.modal > button:nth-of-type(2)').click();
 
 // after: scoped to the dialog and readable by humans and agents
 await page
@@ -64,7 +64,8 @@ The skill produces an action map like this:
 | 1 | Open checkout | `getByRole('button', { name: 'Checkout' })` | visible, enabled | URL contains `/checkout` |
 | 2 | Save card | `dialog.getByRole('button', { name: 'Save card' })` | dialog visible, button enabled | Toast says `Card saved` |
 
-See the full [checkout before/after example](examples/checkout-before-after.md).
+See the full [checkout before/after example](examples/checkout-before-after.md)
+or the [Radix/shadcn dialog example](examples/radix-dialog-before-after.md).
 
 ## Use it for
 
