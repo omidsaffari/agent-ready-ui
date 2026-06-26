@@ -1,55 +1,34 @@
-# AGENTS.md — build spec for a skill / CLAUDE.md artifact
+# AGENTS.md
 
-This repo is **skill-starter**, the omidsaffari Labs scaffold for shipping ONE
-small, forkable **skill** (or a single `CLAUDE.md`) as an authoritative OSS repo.
-Codex clones it with `gh repo create omidsaffari/<slug> --template omidsaffari/skill-starter`,
-then fills it in per this spec. Read this fully before editing.
+This repository ships `agent-ready-ui`, a small Agent Skills artifact for making
+web interfaces easier for browser agents and Playwright tests to operate.
 
-## Doctrine (non-negotiable)
+## Editing Principles
 
-- Build the **narrowest perimeter artifact** that makes an existing agent (Claude
-  Code / Cursor / ChatGPT) better. **One job per skill.**
-- **Never** frame as "AI-powered". Lead with the concrete problem it kills, or
-  "the open-source alternative to <incumbent>".
-- The metric is **forks / awesome-list inclusion / citations**, not stars. The
-  README + the skill quality are the entire product.
-- Banned: general agent frameworks, chatbot wrappers, Lovable/v0/bolt clones.
+- Keep the skill focused on one job: improve UI affordances so agents can click,
+  type, wait, and verify without brittle selectors.
+- Prefer accessible role/name, label, and state contracts over CSS selectors,
+  child indexes, generated class names, or layout-dependent test hooks.
+- Preserve the product UI unless a visible label, state, or message is needed
+  for both humans and agents to understand the interface.
+- Avoid hidden bot-only controls or instructions that make the UI misleading.
+- Keep examples copyable and small enough to apply to a real React, Next.js, or
+  component-library codebase.
 
-## What you edit vs leave
+## Files
 
-- **Edit:** `SKILL.md` (the skill itself), `README.md` (the landing page),
-  optional `scripts/` `references/` `assets/`, and the repo name/description.
-- **Keep:** the `name` + `description` frontmatter keys in `SKILL.md` (CI checks
-  them), the `.github/workflows/ci.yml` gate, the MIT `LICENSE` (set the year +
-  "Omid Saffari" — already done).
-- A `CLAUDE.md` artifact instead of a skill? Replace `SKILL.md` with a single
-  top-level `CLAUDE.md`, drop the skill install section, and keep everything else.
+- `SKILL.md` is the executable instruction surface for Claude Code, Codex, and
+  Agent Skills-compatible tools.
+- `README.md` is the public landing page and install guide.
+- `examples/` contains concrete before/after flows.
+- `references/` contains reusable templates and implementation guidance.
+- `assets/` contains the demo GIF and Open Graph image.
 
-## Fill `SKILL.md`
+## Release Checks
 
-- `name`: lowercase-kebab, matches the repo slug.
-- `description`: front-load trigger words; say when it SHOULD and SHOULD NOT fire.
-  Progressive disclosure shows only name+description until the skill loads, and
-  long ones get shortened — so the first clause must carry the trigger.
-- Body: imperative steps, explicit inputs/outputs. Instructions over scripts
-  unless deterministic behavior or external tooling is required.
+Before publishing a change:
 
-## Fill `README.md` (the conversion surface)
-
-Above-the-fold order, in this order: **title → one-line problem statement →
-demo GIF (`assets/demo.gif`, the single best 5–15s moment) → one badge row →
-install (Claude Code + Codex)**. Keep it skimmable; deep docs go in `references/`.
-
-## Ship checklist (do every release)
-
-0. **First fill step:** `rm .skill-starter-template` (this switches on the strict
-   release CI gates and signals all placeholders must now be replaced).
-1. `name`/`description` valid; CI green.
-2. `README.md` filled; `assets/demo.gif` present; `assets/og.png` (1280×640,
-   solid bg, <1MB) set as the repo's social-preview image.
-3. Repo is a **template repo**; MIT `LICENSE`; 10–20 exact-match **Topics**
-   (e.g. `skill`, `claude-code`, `codex`, `agent`, + the niche).
-4. A GitHub **Release** + a one-line `CHANGELOG` entry.
-5. Distribution: submit to the relevant **awesome-list(s)**; draft the build-log
-   for the Labs catalog; one fresh **Show HN** (Sunday ~noon UTC, problem-framed
-   title, repo in URL, founder comment in 5 min).
+- Run `npx -y markdownlint-cli2 "**/*.md" "#node_modules"`.
+- Confirm `SKILL.md` still has `name` and `description` frontmatter.
+- Keep `README.md` installation commands valid for both Claude Code and Codex.
+- Update `CHANGELOG.md` for user-visible changes.

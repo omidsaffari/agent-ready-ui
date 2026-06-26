@@ -61,6 +61,9 @@ For each browser-agent action in the target flow, record:
 - Success signal: route change, URL, visible heading, toast, persisted value,
   network completion, or DOM state.
 
+Use the table shape from `references/agent-action-map.md` when the repo does not
+already have an equivalent format.
+
 Flag every ambiguous or unstable target:
 
 - Icon-only controls without a programmatic name.
@@ -83,6 +86,9 @@ Make the smallest code changes that improve agent operation and human semantics:
   descriptions.
 - Prefer role/name locators over CSS selectors. Add `data-testid` only when the
   repo already uses test ids or the target has no stable accessible locator.
+- Use the patterns in `references/aria-patterns.md` and
+  `references/playwright-locators.md` for common buttons, dialogs, menus,
+  custom selects, loading states, and fallback locators.
 - Give repeated controls unique scoped names, such as including the row, file,
   item, or entity name in the accessible label.
 - Make loading, disabled, expanded, selected, and error states deterministic and

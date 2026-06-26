@@ -45,5 +45,5 @@ jobs:
           fi
           echo "no leftover placeholders"
 
-      - name: Lint markdown (non-blocking)
-        run: npx -y markdownlint-cli2 "**/*.md" "#node_modules" || true
+      - name: Lint markdown
+        run: npx -y markdownlint-cli2 "**/*.md" "#node_modules"

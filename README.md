@@ -42,6 +42,30 @@ Then invoke with `$agent-ready-ui`, or let Codex pick it implicitly.
 - Verifies the flow with role/name locators and observable settled states instead
   of CSS selectors or arbitrary sleeps.
 
+## Before And After
+
+`agent-ready-ui` turns brittle automation targets into user-facing contracts.
+
+```ts
+// before: layout-coupled and easy to break
+await page.locator('.modal > div:nth-child(2) button').click();
+
+// after: scoped to the dialog and readable by humans and agents
+await page
+  .getByRole('dialog', { name: 'Payment method' })
+  .getByRole('button', { name: 'Save card' })
+  .click();
+```
+
+The skill produces an action map like this:
+
+| Step | User action | Preferred locator | Required state | Success signal |
+| --- | --- | --- | --- | --- |
+| 1 | Open checkout | `getByRole('button', { name: 'Checkout' })` | visible, enabled | URL contains `/checkout` |
+| 2 | Save card | `dialog.getByRole('button', { name: 'Save card' })` | dialog visible, button enabled | Toast says `Card saved` |
+
+See the full [checkout before/after example](examples/checkout-before-after.md).
+
 ## Use it for
 
 - Making a signup, checkout, onboarding, or admin flow reliable for Playwright or
@@ -58,6 +82,12 @@ action map for the target flow. It patches only affordances: labels, roles,
 state, scoped names, deterministic loading behavior, and existing test-id
 patterns when accessible locators are not enough. [SKILL.md](SKILL.md) is the
 source of truth.
+
+Use the reference docs when applying the skill to a real app:
+
+- [Agent action map](references/agent-action-map.md)
+- [ARIA patterns](references/aria-patterns.md)
+- [Playwright locators](references/playwright-locators.md)
 
 ## Example prompt
 
