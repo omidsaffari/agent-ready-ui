@@ -55,6 +55,7 @@ state, and scoped submit action.
 ```tsx
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogTitle,
@@ -67,14 +68,16 @@ import { X } from 'lucide-react';
 export function InviteDialog({ open, saving, onOpenChange, onInvite }) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent aria-busy={saving}>
-        <button
-          aria-label="Close invite teammate dialog"
-          className="absolute right-4 top-4"
-          onClick={() => onOpenChange(false)}
-        >
-          <X aria-hidden="true" />
-        </button>
+      <DialogContent aria-busy={saving} showCloseButton={false}>
+        <DialogClose asChild>
+          <button
+            aria-label="Close invite teammate dialog"
+            className="absolute right-4 top-4"
+            type="button"
+          >
+            <X aria-hidden="true" />
+          </button>
+        </DialogClose>
 
         <DialogTitle>Invite teammate</DialogTitle>
         <DialogDescription>
@@ -125,7 +128,8 @@ await expect(page.getByText('Invitation sent')).toBeVisible();
 - Use `DialogTitle` so the Radix dialog has a stable accessible name.
 - Use `DialogDescription` for extra context instead of hiding instructions in
   placeholder text.
-- Keep the close button icon-only visually, but give it a specific accessible
-  name.
+- Use `showCloseButton={false}` when replacing the stock shadcn close control.
+- Wrap the custom close button with `DialogClose asChild` and give it a specific
+  accessible name.
 - Rename the submit action from generic `Save` to scoped `Send invite`.
 - Use `aria-busy` and disabled state so agents can wait for the dialog to settle.

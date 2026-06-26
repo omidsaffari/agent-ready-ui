@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.3 - 2026-06-26
+
+- Tighten the Radix/shadcn dialog example so a custom close button replaces the
+  stock close control with `showCloseButton={false}` and `DialogClose asChild`.
+
 ## 0.1.2 - 2026-06-26
 
 - Fix the brittle selector example so it matches the shown checkout DOM.
