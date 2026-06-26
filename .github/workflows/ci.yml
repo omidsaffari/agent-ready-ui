@@ -1,0 +1,49 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # The unfilled scaffold carries a marker so its own CI stays green.
+      # The autopilot deletes `.skill-starter-template` as the first fill step,
+      # which switches on the strict release gates below for the output repo.
+      - name: Detect scaffold
+        id: scaffold
+        run: |
+          if [ -f .skill-starter-template ]; then
+            echo "is_template=true" >> "$GITHUB_OUTPUT"
+            echo "Unfilled scaffold — release gates skipped."
+          else
+            echo "is_template=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Validate SKILL.md frontmatter
+        if: steps.scaffold.outputs.is_template == 'false'
+        run: |
+          if [ ! -f SKILL.md ] && [ ! -f CLAUDE.md ]; then
+            echo "::error::ship either a SKILL.md (skill) or a CLAUDE.md (file artifact)"; exit 1
+          fi
+          if [ -f SKILL.md ]; then
+            head -n 20 SKILL.md | grep -qE '^name:' \
+              || { echo "::error::SKILL.md is missing the 'name:' frontmatter key"; exit 1; }
+            head -n 20 SKILL.md | grep -qE '^description:' \
+              || { echo "::error::SKILL.md is missing the 'description:' frontmatter key"; exit 1; }
+            echo "SKILL.md frontmatter OK"
+          fi
+
+      - name: Guard against unfilled placeholders
+        if: steps.scaffold.outputs.is_template == 'false'
+        run: |
+          if grep -rqE '\{\{[A-Z_]+\}\}|<incumbent>|skill-name' README.md SKILL.md 2>/dev/null; then
+            echo "::error::placeholders remain ({{...}}, <incumbent>, skill-name) — fill them before release"; exit 1
+          fi
+          echo "no leftover placeholders"
+
+      - name: Lint markdown (non-blocking)
+        run: npx -y markdownlint-cli2 "**/*.md" "#node_modules" || true

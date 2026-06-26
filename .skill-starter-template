@@ -1,0 +1,4 @@
+This marker means the repo is still the unfilled skill-starter scaffold.
+The omidsaffari Labs autopilot deletes this file as the FIRST fill step,
+which turns on the strict release CI gates (see .github/workflows/ci.yml)
+and signals that placeholders must now be replaced. See AGENTS.md.
